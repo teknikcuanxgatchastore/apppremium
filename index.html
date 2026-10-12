@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gatcha Store — App Premium</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#FDF4FF;
+  --bg2:#F0F4FF;
+  --card:#FFFFFF;
+  --card-border:rgba(150,100,255,0.15);
+  --text:#1A0533;
+  --muted:#7B5EA7;
+  --accent:#A21CAF;
+  --accent2:#6D28D9;
+  --accent3:#DB2777;
+  --green:#059669;
+  --blue:#2563EB;
+  --orange:#EA580C;
+  --cyan:#0891B2;
+}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:linear-gradient(145deg,#FDF4FF 0%,#F0F4FF 40%,#FFF0F6 100%);color:var(--text);min-height:100vh;overflow-x:hidden}
+#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.7}
+
+/* RAINBOW TOP BAR */
+body::before{content:'';position:fixed;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#FF0080,#FF6B35,#FFD600,#00E676,#00B0FF,#7C4DFF,#FF0080);background-size:300% auto;animation:rainbowBar 4s linear infinite;z-index:999}
+@keyframes rainbowBar{0%{background-position:0%}100%{background-position:300%}}
+
+/* HEADER */
+header{background:rgba(255,255,255,0.88);backdrop-filter:blur(24px);border-bottom:2px solid rgba(162,28,175,0.12);padding:0 20px;position:sticky;top:4px;z-index:100;box-shadow:0 4px 24px rgba(162,28,175,0.08)}
+.header-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:66px;gap:16px}
+.logo{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.logo-icon{width:44px;height:44px;background:linear-gradient(135deg,#FF0080,#7C3AED,#00B0FF);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 20px rgba(162,28,175,0.4);animation:logoBounce 3s ease-in-out infinite}
+@keyframes logoBounce{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+.logo-text{font-family:'Syne',sans-serif;font-size:21px;font-weight:800;background:linear-gradient(135deg,#A21CAF,#6D28D9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.5px}
+.logo-sub{font-size:10px;color:#DB2777;letter-spacing:2px;font-weight:700;text-transform:uppercase;display:block;margin-top:-4px}
+.header-search{flex:1;max-width:400px;position:relative}
+.header-search input{width:100%;background:#F5F0FF;border:2px solid rgba(162,28,175,0.15);border-radius:24px;padding:10px 16px 10px 42px;color:#1A0533;font-size:14px;font-family:'Plus Jakarta Sans',sans-serif;outline:none;transition:.2s}
+.header-search input::placeholder{color:#B094CC}
+.header-search input:focus{background:#fff;border-color:#A21CAF;box-shadow:0 0 0 4px rgba(162,28,175,0.1)}
+.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;opacity:0.5}
+.header-badge{background:linear-gradient(135deg,#A21CAF,#6D28D9);border-radius:20px;padding:7px 16px;font-size:12px;color:#fff;font-weight:700;white-space:nowrap;flex-shrink:0;box-shadow:0 4px 14px rgba(162,28,175,0.3)}
+
+/* HERO */
+.hero{position:relative;padding:56px 20px 68px;text-align:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.hero-bg::before{content:'';position:absolute;top:-60px;left:-10%;width:55%;height:400px;background:radial-gradient(ellipse,rgba(255,0,128,0.18),transparent 70%);animation:blob1 7s ease-in-out infinite}
+.hero-bg::after{content:'';position:absolute;top:-40px;right:-10%;width:55%;height:400px;background:radial-gradient(ellipse,rgba(0,176,255,0.18),transparent 70%);animation:blob2 8s ease-in-out infinite}
+@keyframes blob1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(40px,30px) scale(1.1)}}
+@keyframes blob2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-30px,20px) scale(1.12)}}
+.hero-blob3{position:absolute;bottom:-40px;left:50%;transform:translateX(-50%);width:60%;height:300px;background:radial-gradient(ellipse,rgba(109,40,217,0.15),transparent 70%);animation:blob1 6s ease-in-out infinite reverse}
+.hero-content{position:relative;max-width:700px;margin:0 auto;z-index:1}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(255,0,128,0.12),rgba(109,40,217,0.12));border:2px solid rgba(162,28,175,0.2);border-radius:20px;padding:6px 18px;font-size:12px;color:#A21CAF;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:22px;animation:fadeInDown .6s ease;box-shadow:0 2px 12px rgba(162,28,175,0.12)}
+h1{font-family:'Syne',sans-serif;font-size:clamp(32px,6vw,56px);font-weight:800;color:#1A0533;line-height:1.08;margin-bottom:16px;animation:fadeInUp .7s ease}
+h1 span{background:linear-gradient(90deg,#FF0080,#FF6B35,#7C3AED,#00B0FF,#FF0080);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:300% auto;animation:gradShift 3.5s linear infinite}
+@keyframes gradShift{0%{background-position:0%}100%{background-position:300%}}
+.hero-desc{color:#7B5EA7;font-size:15px;margin-bottom:36px;line-height:1.85;animation:fadeIn .9s ease;font-weight:500}
+.hero-stats{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;animation:fadeIn 1s ease}
+.stat{text-align:center;background:#fff;border-radius:16px;padding:14px 24px;box-shadow:0 4px 20px rgba(162,28,175,0.1);border:2px solid rgba(162,28,175,0.08);min-width:90px}
+.stat-num{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;background:linear-gradient(135deg,#FF0080,#7C3AED);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-label{font-size:10px;color:#B094CC;text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;font-weight:600}
+
+/* DISCOUNT BANNER */
+.discount-section{max-width:1200px;margin:32px auto 0;padding:0 20px;position:relative;z-index:1}
+.discount-banner{position:relative;background:linear-gradient(135deg,#FFF0F9,#F5F0FF,#F0F9FF);border:2px solid rgba(219,39,119,0.25);border-radius:22px;padding:22px 26px;overflow:hidden;box-shadow:0 8px 32px rgba(219,39,119,0.12)}
+.discount-banner::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#FF0080,#FF6B35,#FFD600,#00E676,#00B0FF,#7C4DFF);background-size:300% auto;animation:rainbowBar 3s linear infinite}
+.disco-shine{position:absolute;top:-50%;left:-20%;width:50%;height:200%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.6),transparent);animation:shineMove 4s ease-in-out infinite;pointer-events:none}
+@keyframes shineMove{0%,100%{transform:translateX(-100%)}50%{transform:translateX(400%)}}
+.discount-inner{position:relative;z-index:1;display:flex;align-items:flex-start;gap:16px}
+.discount-emoji{font-size:32px;flex-shrink:0;margin-top:2px;animation:pulse2 2s ease-in-out infinite}
+@keyframes pulse2{0%,100%{transform:scale(1)}50%{transform:scale(1.2) rotate(-5deg)}}
+.discount-text-wrap h3{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;background:linear-gradient(90deg,#DB2777,#A21CAF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+.discount-body{color:#4C1D77;font-size:14px;line-height:1.78;white-space:pre-wrap;font-weight:500}
+.discount-placeholder{color:#C4A4D4;font-style:italic;font-size:14px}
+.discount-admin-badge{display:none;margin-top:10px;background:rgba(162,28,175,0.1);border:1.5px solid rgba(162,28,175,0.25);border-radius:8px;padding:5px 10px;font-size:11px;color:#A21CAF;font-weight:700}
+.discount-admin-badge.show{display:inline-block}
+
+/* FILTER */
+.filter-section{max-width:1200px;margin:24px auto 0;padding:0 20px;position:relative;z-index:1}
+.filter-scroll{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none}
+.filter-scroll::-webkit-scrollbar{display:none}
+.filter-btn{flex-shrink:0;padding:9px 18px;border-radius:20px;border:2px solid rgba(162,28,175,0.12);background:#fff;color:#7B5EA7;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.filter-btn:hover{border-color:#A21CAF;color:#A21CAF;transform:translateY(-1px);box-shadow:0 4px 14px rgba(162,28,175,0.2)}
+.filter-btn.active{background:linear-gradient(135deg,#A21CAF,#6D28D9);color:#fff;border-color:transparent;box-shadow:0 6px 20px rgba(162,28,175,0.4);transform:translateY(-2px)}
+
+/* MAIN */
+main{max-width:1200px;margin:0 auto;padding:24px 20px 100px;position:relative;z-index:1}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;margin-top:44px}
+.section-title{display:flex;align-items:center;gap:10px}
+.section-icon{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+.section-name{font-family:'Syne',sans-serif;font-size:19px;font-weight:800;color:#1A0533}
+.section-count{font-size:11px;color:#7B5EA7;background:#F5F0FF;padding:4px 12px;border-radius:10px;font-weight:700;border:1.5px solid rgba(162,28,175,0.12)}
+.section-divider{height:3px;background:linear-gradient(90deg,var(--sec-color,#A21CAF),transparent);border-radius:2px;margin-bottom:18px;margin-top:-8px}
+
+/* PRODUCT CARD */
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(218px,1fr));gap:14px}
+.product-card{background:#fff;border:2px solid rgba(162,28,175,0.1);border-radius:22px;overflow:hidden;transition:all .3s cubic-bezier(.4,0,.2,1);cursor:pointer;position:relative;box-shadow:0 4px 16px rgba(0,0,0,0.06)}
+.product-card:hover{border-color:rgba(162,28,175,0.3);transform:translateY(-6px) scale(1.01);box-shadow:0 20px 50px rgba(162,28,175,0.18)}
+.card-logo{height:100px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.card-logo img{width:68px;height:68px;object-fit:contain;border-radius:16px;position:relative;z-index:1;filter:drop-shadow(0 4px 10px rgba(0,0,0,0.25))}
+.card-logo .logo-bg{position:absolute;inset:0;opacity:0.12}
+.card-body{padding:12px 14px 16px}
+.card-app-name{font-weight:800;font-size:13px;color:#1A0533;margin-bottom:4px;letter-spacing:-.2px}
+.card-plans{display:flex;flex-direction:column;gap:5px;margin-top:8px}
+.plan-row{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:#F9F5FF;border:1.5px solid rgba(162,28,175,0.08);border-radius:10px;transition:.15s}
+.plan-row:hover{background:#F0E8FF;border-color:rgba(162,28,175,0.2)}
+.plan-name{font-size:11px;color:#7B5EA7;font-weight:600;flex:1;margin-right:8px;line-height:1.3}
+.plan-price{font-size:13px;font-weight:800;white-space:nowrap}
+.card-notes{font-size:10px;color:#9B7FBF;margin-top:8px;padding:5px 9px;background:linear-gradient(135deg,#FFF5FB,#F5F0FF);border-radius:7px;border-left:3px solid rgba(162,28,175,0.4);line-height:1.45;font-weight:500}
+.card-badge{position:absolute;top:10px;right:10px;background:linear-gradient(135deg,#FF0080,#FF6B35);color:#fff;font-size:9px;font-weight:800;padding:4px 10px;border-radius:10px;text-transform:uppercase;letter-spacing:.5px;box-shadow:0 3px 12px rgba(255,0,128,0.45);animation:badgePulse 2.5s ease-in-out infinite}
+@keyframes badgePulse{0%,100%{box-shadow:0 3px 12px rgba(255,0,128,0.45)}50%{box-shadow:0 3px 22px rgba(255,0,128,0.75)}}
+
+/* CATEGORY PRICE COLORS — vibrant */
+.cat-streaming .plan-price{color:#E11D48}
+.cat-music .plan-price{color:#059669}
+.cat-productivity .plan-price{color:#2563EB}
+.cat-photodesign .plan-price{color:#D97706}
+.cat-ai .plan-price{color:#7C3AED}
+.cat-education .plan-price{color:#0891B2}
+.cat-game .plan-price{color:#16A34A}
+.cat-tools .plan-price{color:#9333EA}
+.cat-vpn .plan-price{color:#475569}
+.cat-robux .plan-price{color:#DC2626}
+
+/* CATEGORY CARD ACCENTS */
+.cat-streaming .plan-row{background:#FFF1F2;border-color:rgba(225,29,72,0.1)}
+.cat-streaming .plan-row:hover{background:#FFE4E8;border-color:rgba(225,29,72,0.25)}
+.cat-music .plan-row{background:#ECFDF5;border-color:rgba(5,150,105,0.1)}
+.cat-music .plan-row:hover{background:#D1FAE5;border-color:rgba(5,150,105,0.25)}
+.cat-productivity .plan-row{background:#EFF6FF;border-color:rgba(37,99,235,0.1)}
+.cat-productivity .plan-row:hover{background:#DBEAFE;border-color:rgba(37,99,235,0.25)}
+.cat-photodesign .plan-row{background:#FFFBEB;border-color:rgba(217,119,6,0.1)}
+.cat-photodesign .plan-row:hover{background:#FEF3C7;border-color:rgba(217,119,6,0.25)}
+.cat-ai .plan-row{background:#F5F3FF;border-color:rgba(124,58,237,0.1)}
+.cat-ai .plan-row:hover{background:#EDE9FE;border-color:rgba(124,58,237,0.25)}
+.cat-education .plan-row{background:#ECFEFF;border-color:rgba(8,145,178,0.1)}
+.cat-education .plan-row:hover{background:#CFFAFE;border-color:rgba(8,145,178,0.25)}
+.cat-game .plan-row{background:#F0FDF4;border-color:rgba(22,163,74,0.1)}
+.cat-game .plan-row:hover{background:#DCFCE7;border-color:rgba(22,163,74,0.25)}
+.cat-robux .plan-row{background:#FFF1F2;border-color:rgba(220,38,38,0.1)}
+.cat-robux .plan-row:hover{background:#FFE4E8;border-color:rgba(220,38,38,0.25)}
+
+/* ADMIN FAB */
+.admin-fab{position:fixed;bottom:28px;left:28px;z-index:200;width:52px;height:52px;background:#fff;border:2px solid rgba(162,28,175,0.2);border-radius:50%;font-size:22px;cursor:pointer;transition:all .25s;box-shadow:0 4px 16px rgba(0,0,0,0.12);display:flex;align-items:center;justify-content:center}
+.admin-fab:hover{background:#F5F0FF;border-color:#A21CAF;transform:scale(1.1);box-shadow:0 8px 24px rgba(162,28,175,0.25)}
+.admin-fab.active-admin{background:linear-gradient(135deg,#A21CAF,#6D28D9);border-color:transparent;box-shadow:0 6px 24px rgba(162,28,175,0.5)}
+
+/* WA FLOAT */
+.wa-float{position:fixed;bottom:28px;right:28px;z-index:200;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border-radius:50px;padding:14px 24px;display:flex;align-items:center;gap:10px;font-size:14px;font-weight:800;text-decoration:none;box-shadow:0 8px 28px rgba(37,211,102,0.5);transition:.25s;font-family:'Plus Jakarta Sans',sans-serif}
+.wa-float:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(37,211,102,0.6)}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;z-index:300;background:rgba(26,5,51,0.45);backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.show{display:flex}
+.login-modal{background:#fff;border:2px solid rgba(162,28,175,0.2);border-radius:28px;padding:44px 40px;width:100%;max-width:380px;text-align:center;box-shadow:0 40px 80px rgba(162,28,175,0.2)}
+.login-modal .modal-lock{font-size:48px;margin-bottom:16px;display:block}
+.login-modal h2{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#1A0533;margin-bottom:8px}
+.login-modal p{color:#9B7FBF;font-size:13px;margin-bottom:28px;font-weight:500}
+.modal-input{width:100%;padding:14px 16px;background:#F9F5FF;border:2px solid rgba(162,28,175,0.15);border-radius:14px;color:#1A0533;font-size:18px;font-family:'Plus Jakarta Sans',sans-serif;outline:none;text-align:center;letter-spacing:8px;margin-bottom:12px;font-weight:700}
+.modal-input:focus{border-color:#A21CAF;box-shadow:0 0 0 4px rgba(162,28,175,0.1);background:#fff}
+.login-err{color:#E11D48;font-size:13px;margin-bottom:12px;display:none;font-weight:700}
+.login-err.show{display:block}
+.btn-primary{width:100%;padding:14px;background:linear-gradient(135deg,#A21CAF,#6D28D9);border:none;border-radius:14px;color:#fff;font-size:15px;font-weight:800;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:.2s;letter-spacing:.3px;box-shadow:0 6px 20px rgba(162,28,175,0.35)}
+.btn-primary:hover{opacity:.92;transform:translateY(-2px);box-shadow:0 10px 28px rgba(162,28,175,0.5)}
+.btn-ghost{margin-top:10px;width:100%;padding:12px;background:transparent;border:2px solid rgba(162,28,175,0.15);border-radius:14px;color:#9B7FBF;font-size:14px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:.2s;font-weight:600}
+.btn-ghost:hover{border-color:#A21CAF;color:#A21CAF}
+
+/* ADMIN DRAWER */
+.drawer-overlay{position:fixed;inset:0;z-index:350;background:rgba(26,5,51,0.3);backdrop-filter:blur(4px);display:none}
+.drawer-overlay.show{display:block}
+.admin-drawer{position:fixed;top:0;right:-500px;bottom:0;z-index:400;width:100%;max-width:480px;background:#fff;border-left:2px solid rgba(162,28,175,0.15);display:flex;flex-direction:column;transition:right .35s cubic-bezier(.4,0,.2,1);box-shadow:-24px 0 60px rgba(162,28,175,0.15)}
+.admin-drawer.open{right:0}
+.drawer-header{padding:20px 24px;border-bottom:2px solid rgba(162,28,175,0.08);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:linear-gradient(135deg,#FDF4FF,#F0F4FF)}
+.drawer-header h3{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:#1A0533;display:flex;align-items:center;gap:8px}
+.drawer-close{width:36px;height:36px;background:#F5F0FF;border:1.5px solid rgba(162,28,175,0.15);border-radius:10px;color:#7B5EA7;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s}
+.drawer-close:hover{background:#EDE9FE;color:#A21CAF}
+.drawer-tabs{display:flex;gap:8px;padding:16px 24px 0;flex-shrink:0}
+.drawer-tab{flex:1;padding:10px;text-align:center;background:#F9F5FF;border:1.5px solid rgba(162,28,175,0.1);border-radius:12px;color:#9B7FBF;font-size:13px;font-weight:700;cursor:pointer;transition:.2s;font-family:'Plus Jakarta Sans',sans-serif}
+.drawer-tab.active{background:linear-gradient(135deg,rgba(162,28,175,0.12),rgba(109,40,217,0.12));border-color:#A21CAF;color:#A21CAF}
+.drawer-body{flex:1;overflow-y:auto;padding:20px 24px}
+.drawer-body::-webkit-scrollbar{width:3px}
+.drawer-body::-webkit-scrollbar-thumb{background:rgba(162,28,175,0.3);border-radius:2px}
+.drawer-footer{padding:16px 24px;border-top:2px solid rgba(162,28,175,0.08);display:flex;gap:8px;flex-shrink:0;background:#FDFAFF}
+.form-label{font-size:11px;color:#9B7FBF;font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px;display:block}
+.form-textarea{width:100%;min-height:150px;padding:13px;background:#F9F5FF;border:2px solid rgba(162,28,175,0.12);border-radius:12px;color:#1A0533;font-size:14px;line-height:1.7;font-family:'Plus Jakarta Sans',sans-serif;outline:none;resize:vertical;font-weight:500}
+.form-textarea:focus{border-color:#A21CAF;background:#fff}
+.form-textarea::placeholder{color:#C4A4D4;font-style:italic}
+.form-hint{font-size:11.5px;color:#B094CC;margin-top:8px;line-height:1.5;font-weight:500}
+.price-search-input{width:100%;padding:10px 14px;background:#F9F5FF;border:2px solid rgba(162,28,175,0.12);border-radius:10px;color:#1A0533;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;outline:none;margin-bottom:16px;font-weight:600}
+.price-search-input:focus{border-color:#A21CAF;background:#fff}
+.price-app-group{margin-bottom:18px}
+.price-app-label{font-size:11px;color:#A21CAF;font-weight:800;letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px;padding-bottom:6px;border-bottom:2px solid rgba(162,28,175,0.1)}
+.price-row{display:flex;align-items:center;gap:10px;margin-bottom:6px;padding:7px 10px;background:#FAF7FF;border-radius:8px;border:1.5px solid rgba(162,28,175,0.07)}
+.price-row-name{flex:1;font-size:11.5px;color:#7B5EA7;line-height:1.3;font-weight:500}
+.price-input{width:115px;padding:7px 10px;background:#F5F0FF;border:2px solid rgba(162,28,175,0.15);border-radius:8px;color:#A21CAF;font-size:13px;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;outline:none;text-align:right}
+.price-input:focus{border-color:#A21CAF;background:#fff}
+.btn-danger{padding:13px;background:#FFF1F2;border:2px solid rgba(225,29,72,0.2);border-radius:12px;color:#E11D48;font-size:14px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:.2s}
+.btn-danger:hover{background:#FFE4E8;border-color:#E11D48}
+
+/* TOAST */
+.save-toast{position:fixed;bottom:90px;right:28px;z-index:500;background:linear-gradient(135deg,#059669,#047857);color:#fff;padding:12px 24px;border-radius:14px;font-size:13px;font-weight:800;transform:translateY(20px);opacity:0;transition:.3s;pointer-events:none;box-shadow:0 8px 24px rgba(5,150,105,0.5)}
+.save-toast.show{transform:translateY(0);opacity:1}
+
+/* NO RESULTS */
+.no-results{text-align:center;padding:70px 20px;color:#C4A4D4}
+.no-results-icon{font-size:52px;margin-bottom:12px}
+
+/* FOOTER */
+footer{background:linear-gradient(135deg,#F5F0FF,#FFF0F6);border-top:2px solid rgba(162,28,175,0.1);color:#9B7FBF;text-align:center;padding:28px 20px;font-size:13px;position:relative;z-index:1;font-weight:600}
+footer strong{background:linear-gradient(135deg,#A21CAF,#6D28D9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeInDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:600px){
+  .header-search{display:none}
+  h1{font-size:28px}
+  .hero-stats{gap:12px}
+  .stat{padding:10px 16px}
+  .products-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+  .admin-drawer{max-width:100%}
+}
+
+/* ITEM MANAGER */
+.cat-box{background:#FDF4FF;border:2px dashed rgba(162,28,175,.25);border-radius:14px;padding:14px;margin-bottom:18px}
+.cat-box .price-search-input{margin-bottom:8px;width:100%}
+.app-adm-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.st{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:800;margin-left:6px}.st.on{background:#D1FAE5;color:#047857}.st.off{background:#FFE4E8;color:#E11D48}
+.mini{padding:5px 10px;border-radius:8px;border:1.5px solid rgba(162,28,175,.2);background:#fff;color:#A21CAF;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.mini.del{color:#E11D48;border-color:rgba(225,29,72,.25)}.mini:disabled{opacity:.35;cursor:not-allowed}
+.add-plan{display:grid;grid-template-columns:1.4fr 1fr auto;gap:6px;margin-top:8px}
+.add-plan input{padding:7px 9px;border:1.5px solid rgba(162,28,175,.15);border-radius:8px;font-family:inherit;font-size:12px;min-width:0}
+</style>
+</head>
+<body>
+
+<canvas id="particleCanvas"></canvas>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-icon">✨</div>
+      <div>
+        <div class="logo-text">Gatcha Store</div>
+        <span class="logo-sub">App Premium</span>
+      </div>
+    </div>
+    <div class="header-search">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Cari aplikasi... (Netflix, Canva, dll)" oninput="handleSearch(this.value)">
+    </div>
+    <div class="header-badge">✅ Fast Respon • Terpercaya</div>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-bg"><div class="hero-blob3"></div></div>
+  <div class="hero-content">
+    <div class="hero-tag">🎯 Katalog Digital Terlengkap</div>
+    <h1>App Premium<br><span>Harga Terjangkau</span></h1>
+    <p class="hero-desc">Streaming, Music, Produktivitas, AI Tools & lebih banyak lagi.<br>Semua tersedia dengan harga terbaik!</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">65+</div><div class="stat-label">Aplikasi</div></div>
+      <div class="stat"><div class="stat-num">134</div><div class="stat-label">Pilihan Plan</div></div>
+      <div class="stat"><div class="stat-num">9</div><div class="stat-label">Kategori</div></div>
+      <div class="stat"><div class="stat-num">⚡</div><div class="stat-label">Instan</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- DISCOUNT BANNER -->
+<div class="discount-section">
+  <div class="discount-banner">
+    <div class="disco-shine"></div>
+    <div class="discount-inner">
+      <div class="discount-emoji">🏷️</div>
+      <div class="discount-text-wrap">
+        <h3>💥 Promo &amp; Diskon Spesial</h3>
+        <div class="discount-body" id="discountBodyEl">
+          <span class="discount-placeholder">Belum ada info diskon. Admin dapat mengisi melalui panel admin (🔐).</span>
+        </div>
+        <span class="discount-admin-badge" id="discountAdminBadge">🔐 Mode Admin — Buka panel untuk mengedit teks ini</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="filter-section">
+  <div class="filter-scroll" id="filterTabs">
+    <button class="filter-btn active" onclick="filterCat('all',this)">🌟 Semua</button>
+    <button class="filter-btn" onclick="filterCat('Streaming',this)">🎬 Streaming</button>
+    <button class="filter-btn" onclick="filterCat('Music',this)">🎵 Music</button>
+    <button class="filter-btn" onclick="filterCat('Productivity',this)">💼 Produktivitas</button>
+    <button class="filter-btn" onclick="filterCat('Photo/Design',this)">🎨 Foto &amp; Desain</button>
+    <button class="filter-btn" onclick="filterCat('AI Tools',this)">🤖 AI Tools</button>
+    <button class="filter-btn" onclick="filterCat('Education',this)">📚 Edukasi</button>
+    <button class="filter-btn" onclick="filterCat('Game',this)">🎮 Game</button>
+    <button class="filter-btn" onclick="filterCat('Tools',this)">🔧 Tools</button>
+    <button class="filter-btn" onclick="filterCat('VPN',this)">🔒 VPN</button>
+    <button class="filter-btn" onclick="filterCat('Robux',this)">💎 Robux</button>
+  </div>
+</div>
+
+<main id="mainContent"></main>
+
+<a class="wa-float" href="https://wa.me/6282252131233" target="_blank">
+  <span style="font-size:20px">💬</span> Order via WA
+</a>
+
+<button class="admin-fab" id="adminFab" onclick="handleAdminFab()" title="Admin Login">🔐</button>
+
+<div class="save-toast" id="saveToast">✅ Tersimpan & semua user sudah ter-update!</div>
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="loginModal">
+  <div class="login-modal">
+    <span class="modal-lock">🔐</span>
+    <h2>Admin Access</h2>
+    <p>Masukkan password untuk mengelola dashboard</p>
+    <input type="password" class="modal-input" id="passwordInput" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    <div class="login-err" id="loginErr">❌ Password salah, coba lagi!</div>
+    <button class="btn-primary" onclick="doLogin()">Masuk sebagai Admin</button>
+    <button class="btn-ghost" onclick="closeLoginModal()">Batal</button>
+  </div>
+</div>
+
+<!-- DRAWER OVERLAY -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+
+<!-- ADMIN DRAWER -->
+<div class="admin-drawer" id="adminDrawer">
+  <div class="drawer-header">
+    <h3>🛠️ Admin Panel</h3>
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="drawer-tabs">
+    <button class="drawer-tab active" id="dTab1" onclick="switchTab(1)">🏷️ Teks Diskon</button>
+    <button class="drawer-tab" id="dTab2" onclick="switchTab(2)">💰 Edit Harga</button>
+    <button class="drawer-tab" id="dTab3" onclick="switchTab(3)">📦 Item</button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+  <div class="drawer-footer">
+    <button class="btn-primary" style="flex:1" onclick="saveCurrentTab()">💾 Simpan Perubahan</button>
+    <button class="btn-danger" onclick="doLogout()" title="Logout">🚪</button>
+  </div>
+</div>
+
+<footer>
+  <strong>Gatcha Store — App Premium</strong><br>
+  Fast respon · Garansi · Terpercaya · DM/WA untuk order
+</footer>
+
+<script>
+// ========== CONFIG ==========
+// Ganti password di bawah ini (hanya ubah teksnya)
+const ADMIN_PASSWORD = "gatcha2024";
+
+// ========== STATE ==========
+let isAdmin = false;
+let currentCat = 'all';
+let currentSearch = '';
+let currentTab = 1;
+let priceOverrides = {};  // { "APP|PLAN": price }
+let discountText = '';
+let appsReg = {};      // { NAMA: {cat, active} }  -> registri item (termasuk item kosong)
+let customMeta = {};   // meta logo/emoji item baru
+let customCats = {};   // kategori baru
+
+// ========== DATA PRODUK (Harga +0.5%, dibulatkan ke Rp 500 terdekat) ==========
+let PRODUCTS = [
+  // STREAMING
+  {name:"NETFLIX",cat:"Streaming",plan:"Sharing 1P1U - 1 bulan",notes:"1P1U all device, bisa luar negeri",base:43500},
+  {name:"NETFLIX",cat:"Streaming",plan:"Sharing 1P2U - 1 bulan",notes:"bisa all device",base:27500},
+  {name:"NETFLIX",cat:"Streaming",plan:"Semi Private - 1 bulan",notes:"durasi 25-30 hari",base:48500},
+  {name:"DISNEY+",cat:"Streaming",plan:"Premium 6u - 1 bulan",notes:"all device, reg indo",base:33500},
+  {name:"DISNEY+",cat:"Streaming",plan:"Premium 6u - 7 hari",notes:"all device, reg indo",base:15500},
+  {name:"DISNEY+",cat:"Streaming",plan:"Premium 6u - 3 hari",notes:"all device, reg indo",base:8000},
+  {name:"DISNEY+",cat:"Streaming",plan:"Premium 6u - 1 hari",notes:"all device, reg indo",base:6000},
+  {name:"IQIYI",cat:"Streaming",plan:"Sharing Premium - 1 bulan",notes:"",base:7000},
+  {name:"IQIYI",cat:"Streaming",plan:"Sharing Premium - 3 bulan",notes:"",base:12500},
+  {name:"IQIYI",cat:"Streaming",plan:"Sharing Premium - 1 tahun",notes:"",base:15500},
+  {name:"IQIYI",cat:"Streaming",plan:"Sharing Standar - 1 bulan",notes:"",base:6000},
+  {name:"IQIYI",cat:"Streaming",plan:"Anlim Premium - 1 bulan",notes:"",base:22500},
+  {name:"IQIYI",cat:"Streaming",plan:"Private Premium - 1 bulan",notes:"",base:40500},
+  {name:"WETV",cat:"Streaming",plan:"Sharing 6u - 1 bulan",notes:"",base:11500},
+  {name:"WETV",cat:"Streaming",plan:"Anlim - 1 bulan",notes:"login tv beli yg anlim",base:22500},
+  {name:"LOKLOK",cat:"Streaming",plan:"Sharing Dasar - 1 bulan",notes:"",base:25500},
+  {name:"LOKLOK",cat:"Streaming",plan:"Sharing Standar - 1 bulan",notes:"",base:27500},
+  {name:"VIDIO PLATINUM",cat:"Streaming",plan:"Private Mobile - 1 bulan",notes:"",base:32500},
+  {name:"VIDIO PLATINUM",cat:"Streaming",plan:"Private Mobile - 7 hari",notes:"",base:8000},
+  {name:"VIDIO PLATINUM",cat:"Streaming",plan:"Sharing Mobile - 1 bulan",notes:"2u",base:22500},
+  {name:"VIDIO PLATINUM",cat:"Streaming",plan:"Sharing Mobile - 7 hari",notes:"2u",base:6000},
+  {name:"VIDIO PLATINUM",cat:"Streaming",plan:"Private TV - 1 bulan",notes:"",base:15500},
+  {name:"VIDIO PLATINUM",cat:"Streaming",plan:"Sharing Alldev - 1 bulan",notes:"",base:30500},
+  {name:"VIU",cat:"Streaming",plan:"1 bulan",notes:"",base:4100},
+  {name:"VIU",cat:"Streaming",plan:"3 bulan",notes:"",base:6000},
+  {name:"VIU",cat:"Streaming",plan:"1 tahun",notes:"",base:12500},
+  {name:"YOUKU",cat:"Streaming",plan:"Sharing - 1 bulan",notes:"",base:6000},
+  {name:"YOUKU",cat:"Streaming",plan:"Sharing - 3 bulan",notes:"",base:8000},
+  {name:"YOUKU",cat:"Streaming",plan:"Sharing - 1 tahun",notes:"",base:13500},
+  {name:"YOUTUBE",cat:"Streaming",plan:"Famplan - 1 bulan",notes:"",base:6000},
+  {name:"YOUTUBE",cat:"Streaming",plan:"Indplan - 1 bulan",notes:"",base:12500},
+  {name:"YOUTUBE",cat:"Streaming",plan:"Indplan - 3 bulan",notes:"no renew",base:30500},
+  {name:"PRIME VIDEO",cat:"Streaming",plan:"Sharing 3u - 7 hari",notes:"",base:4600},
+  {name:"PRIME VIDEO",cat:"Streaming",plan:"Sharing 3u - 1 bulan",notes:"",base:8000},
+  {name:"PRIME VIDEO",cat:"Streaming",plan:"Private - 1 bulan",notes:"",base:21500},
+  {name:"RCTI+",cat:"Streaming",plan:"Sharing - 1 bulan",notes:"",base:15500},
+  {name:"RCTI+",cat:"Streaming",plan:"Private - 1 bulan",notes:"",base:27500},
+  {name:"HBO MAX",cat:"Streaming",plan:"Sharing Standar - 1 bulan",notes:"",base:23500},
+  {name:"HBO MAX",cat:"Streaming",plan:"Sharing Ultimate - 1 bulan",notes:"login tv +10k",base:27500},
+  {name:"VISION SPORT",cat:"Streaming",plan:"Sharing - 1 bulan",notes:"",base:15500},
+  {name:"VISION SPORT",cat:"Streaming",plan:"Private - 1 bulan",notes:"",base:30500},
+  {name:"VIKI RAKUTEN",cat:"Streaming",plan:"Sharing Standar - 1 bulan",notes:"",base:8000},
+  {name:"VIKI RAKUTEN",cat:"Streaming",plan:"Sharing Plus - 1 bulan",notes:"",base:15500},
+  {name:"BSTATION",cat:"Streaming",plan:"Sharing - 1 bulan",notes:"",base:6000},
+  {name:"BSTATION",cat:"Streaming",plan:"Sharing - 3 bulan",notes:"",base:8000},
+  {name:"BSTATION",cat:"Streaming",plan:"Sharing - 1 tahun",notes:"",base:13500},
+  {name:"CATCHPLAY",cat:"Streaming",plan:"Sharing - 1 bulan",notes:"",base:7000},
+  {name:"CATCHPLAY",cat:"Streaming",plan:"Private - 1 bulan",notes:"",base:15500},
+  {name:"CRUNCHYROLL",cat:"Streaming",plan:"Sharing - 1 bulan",notes:"",base:7000},
+  {name:"CRUNCHYROLL",cat:"Streaming",plan:"Sharing - 1 tahun",notes:"",base:15500},
+  {name:"MOVIE BOX",cat:"Streaming",plan:"Andro - 1 bulan",notes:"",base:6000},
+  {name:"MOVIE BOX",cat:"Streaming",plan:"Ios - 1 bulan",notes:"",base:8000},
+  {name:"DRAKOR ID",cat:"Streaming",plan:"Sharing - 1 tahun",notes:"",base:15500},
+  {name:"GAGAOLALA",cat:"Streaming",plan:"Sharing - 1 bulan",notes:"",base:7000},
+  // MUSIC
+  {name:"SPOTIFY",cat:"Music",plan:"Famplan - 1 bulan",notes:"acc seller",base:25500},
+  {name:"SPOTIFY",cat:"Music",plan:"Student - 1 bulan",notes:"acc seller",base:24500},
+  {name:"APPLE MUSIC",cat:"Music",plan:"Family - 1 bulan",notes:"need email cust",base:8000},
+  {name:"APPLE MUSIC",cat:"Music",plan:"Family - 2 bulan",notes:"need email cust",base:15500},
+  {name:"APPLE MUSIC",cat:"Music",plan:"Family - 3 bulan",notes:"need email cust",base:35500},
+  // PRODUCTIVITY
+  {name:"CANVA",cat:"Productivity",plan:"1 hari",notes:"",base:2000},
+  {name:"CANVA",cat:"Productivity",plan:"3 hari",notes:"",base:2000},
+  {name:"CANVA",cat:"Productivity",plan:"7 hari",notes:"",base:2100},
+  {name:"CANVA",cat:"Productivity",plan:"1 bulan",notes:"",base:3600},
+  {name:"CANVA",cat:"Productivity",plan:"1 tahun",notes:"",base:12500},
+  {name:"CANVA",cat:"Productivity",plan:"lifetime",notes:"garansi 6b",base:13500},
+  {name:"CAPCUT",cat:"Productivity",plan:"Sharing - 7 hari",notes:"",base:5500},
+  {name:"CAPCUT",cat:"Productivity",plan:"Sharing - 1 bulan",notes:"",base:13500},
+  {name:"CAPCUT",cat:"Productivity",plan:"Private - 7 hari",notes:"",base:8000},
+  {name:"CAPCUT",cat:"Productivity",plan:"Private - 1 bulan",notes:"",base:30500},
+  {name:"MS365",cat:"Productivity",plan:"1 bulan",notes:"need email cust",base:6000},
+  {name:"WPS OFFICE",cat:"Productivity",plan:"Sharing - 1 bulan",notes:"",base:8000},
+  {name:"WPS OFFICE",cat:"Productivity",plan:"Sharing - 1 tahun",notes:"",base:15500},
+  {name:"GOODNOTES IOS",cat:"Productivity",plan:"lifetime",notes:"",base:15500},
+  {name:"QUIZLET PLUS",cat:"Productivity",plan:"Sharing - 1 bulan",notes:"acc seller",base:8000},
+  {name:"QUIZLET PLUS",cat:"Productivity",plan:"Private - 1 bulan",notes:"acc seller",base:25500},
+  {name:"ZOOM PRO",cat:"Productivity",plan:"Private - 1 jam",notes:"100 participants",base:4600},
+  {name:"ZOOM PRO",cat:"Productivity",plan:"Private - 1 hari",notes:"100 participants",base:8000},
+  // PHOTO/DESIGN
+  {name:"PROCCD",cat:"Photo/Design",plan:"1 tahun",notes:"khusus andro",base:15500},
+  {name:"PROCREATE",cat:"Photo/Design",plan:"Lifetime",notes:"khusus ios",base:15500},
+  {name:"REMINI WEB",cat:"Photo/Design",plan:"Sharing - 1 bulan",notes:"",base:8000},
+  {name:"REMINI WEB",cat:"Photo/Design",plan:"Private - 1 bulan",notes:"",base:25500},
+  {name:"TEZZA",cat:"Photo/Design",plan:"1 tahun",notes:"khusus andro",base:15500},
+  {name:"MEITU",cat:"Photo/Design",plan:"Sharing - 1 bulan",notes:"tidak bisa hd foto",base:27500},
+  {name:"MEITU",cat:"Photo/Design",plan:"Private - 1 bulan",notes:"",base:40500},
+  {name:"OLDROLL",cat:"Photo/Design",plan:"Lifetime",notes:"khusus andro",base:15500},
+  {name:"PICSART",cat:"Photo/Design",plan:"Sharing - 1 bulan",notes:"",base:6000},
+  {name:"PICSART",cat:"Photo/Design",plan:"Private - 1 bulan",notes:"",base:8000},
+  {name:"POLAR",cat:"Photo/Design",plan:"1 tahun",notes:"bisa andro/ios",base:15500},
+  {name:"LIGHTROOM",cat:"Photo/Design",plan:"1 tahun",notes:"garansi 6b, bisa ios/andro",base:15500},
+  {name:"VSCO",cat:"Photo/Design",plan:"Pro - 1 tahun",notes:"khusus ios",base:15500},
+  {name:"VSCO",cat:"Photo/Design",plan:"Plus - 1 tahun",notes:"",base:13500},
+  {name:"IBIS PAINT",cat:"Photo/Design",plan:"1 tahun",notes:"bisa ios/andro",base:15500},
+  {name:"ALIGHT MOTION",cat:"Photo/Design",plan:"Private - 1 tahun",notes:"ios/andro, login link",base:11500},
+  {name:"EPIK",cat:"Photo/Design",plan:"Lifetime",notes:"akun sharing, khusus andro",base:30500},
+  {name:"DAZZCAM",cat:"Photo/Design",plan:"1 bulan",notes:"khusus ios",base:15500},
+  // AI TOOLS
+  {name:"CHAT GPT",cat:"AI Tools",plan:"Sharing - 7 hari",notes:"",base:14500},
+  {name:"CHAT GPT",cat:"AI Tools",plan:"Sharing - 1 bulan",notes:"",base:35500},
+  {name:"CHAT GPT",cat:"AI Tools",plan:"Private - 1 bulan",notes:"",base:206500},
+  {name:"GEMINI+GOOGLE ONE",cat:"AI Tools",plan:"1 bulan",notes:"bisa akun seller/cust",base:15500},
+  {name:"GEMINI+GOOGLE ONE",cat:"AI Tools",plan:"1 tahun",notes:"bisa akun seller/cust",base:35500},
+  {name:"PERPLEXITY AI",cat:"AI Tools",plan:"Sharing - 1 bulan",notes:"",base:15500},
+  {name:"PERPLEXITY AI",cat:"AI Tools",plan:"Private - 1 bulan",notes:"",base:30500},
+  {name:"QUILLBOT",cat:"AI Tools",plan:"Sharing - 1 bulan",notes:"",base:13500},
+  {name:"GRAMMARLY",cat:"AI Tools",plan:"Sharing - 1 bulan",notes:"",base:12500},
+  // EDUCATION
+  {name:"DUOLINGO",cat:"Education",plan:"Family - 1 bulan",notes:"",base:12500},
+  {name:"BRAINLY PLUS",cat:"Education",plan:"Sharing - 1 tahun",notes:"",base:15500},
+  {name:"SCRIBD",cat:"Education",plan:"Sharing - 1 bulan",notes:"",base:4600},
+  {name:"SCRIBD",cat:"Education",plan:"Private - 1 bulan",notes:"",base:8000},
+  {name:"I LOVE PDF",cat:"Education",plan:"Sharing - 1 tahun",notes:"",base:15500},
+  {name:"CAMSCANNER",cat:"Education",plan:"Sharing - 1 tahun",notes:"all benefits premium",base:15500},
+  // GAME
+  {name:"MINECRAFT",cat:"Game",plan:"Lifetime",notes:"bisa ios/andro",base:13500},
+  {name:"PAPA'S TO GO",cat:"Game",plan:"Lifetime",notes:"17 game, bisa ios/andro",base:25500},
+  {name:"UNPACKING",cat:"Game",plan:"Lifetime",notes:"andro only, garansi 6b",base:15500},
+  {name:"PAPERS PLEASE IOS",cat:"Game",plan:"Private lifetime",notes:"garansi 6b",base:15500},
+  // TOOLS
+  {name:"INSHOT",cat:"Tools",plan:"Lifetime",notes:"khusus andro",base:15500},
+  {name:"IFAKE",cat:"Tools",plan:"Lifetime andro",notes:"",base:15500},
+  {name:"IFAKE",cat:"Tools",plan:"Lifetime ios",notes:"",base:13500},
+  {name:"WATTPAD PRO",cat:"Tools",plan:"Sharing - 1 bulan",notes:"hanya hilangkan ads",base:7000},
+  {name:"WATTPAD PRO",cat:"Tools",plan:"Sharing - 1 tahun",notes:"hanya hilangkan ads",base:15500},
+  // VPN
+  {name:"EXPRESS VPN",cat:"VPN",plan:"Sharing - 1 bulan",notes:"",base:4600},
+  {name:"EXPRESS VPN",cat:"VPN",plan:"Private - 1 bulan",notes:"",base:8000},
+  {name:"HMA VPN",cat:"VPN",plan:"Sharing - 1 bulan",notes:"",base:4600},
+  {name:"HMA VPN",cat:"VPN",plan:"Private - 1 bulan",notes:"",base:8000},
+  {name:"SURFSHARK VPN",cat:"VPN",plan:"1 bulan",notes:"",base:8000},
+  {name:"WINDSCRIBE VPN",cat:"VPN",plan:"Sharing - 1 bulan",notes:"",base:15500},
+  // ROBUX
+  {name:"ROBUX VIA LOGIN",cat:"Robux",plan:"80r",notes:"",base:24000},
+  {name:"ROBUX VIA LOGIN",cat:"Robux",plan:"160r",notes:"",base:38000},
+  {name:"ROBUX VIA LOGIN",cat:"Robux",plan:"240r",notes:"",base:52000},
+  {name:"ROBUX VIA LOGIN",cat:"Robux",plan:"320r",notes:"",base:66000},
+  {name:"ROBUX VIA LOGIN",cat:"Robux",plan:"400r",notes:"",base:79500},
+  {name:"ROBUX VIA LOGIN",cat:"Robux",plan:"500r",notes:"kelipatan 500",base:79500},
+  {name:"ROBUX VIA LOGIN",cat:"Robux",plan:"1000r",notes:"kelipatan 500",base:149000},
+  {name:"ROBUX VIA LOGIN",cat:"Robux",plan:"450r+Prem",notes:"robux premium",base:79500},
+  {name:"ROBUX VIA LOGIN",cat:"Robux",plan:"1000r+Prem",notes:"robux premium",base:151000},
+];
+
+const APP_META = {
+  'NETFLIX':      {logo:'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/netflix.svg',bg:'#E50914',emoji:'🎬'},
+  'DISNEY+':      {logo:'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/disney.svg',bg:'#113CCF',emoji:'🏰'},
+  'IQIYI':        {logo:'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/iqiyi.svg',bg:'#00BE06',emoji:'📺'},
+  'WETV':         {logo:null,bg:'#FF4040',emoji:'📺'},
+  'LOKLOK':       {logo:null,bg:'#FF6B35',emoji:'🎭'},
+  'VIDIO PLATINUM':{logo:null,bg:'#1877F2',emoji:'📺'},
+  'VIU':          {logo:null,bg:'#FFCC00',emoji:'🎦'},
+  'YOUKU':        {logo:'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/youku.svg',bg:'#13ABEF',emoji:'▶️'},
+  'YOUTUBE':      {logo:'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/youtube.svg',bg:'#FF0000',emoji:'▶️'},
+  'PRIME VIDEO':  {logo:'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/primevideo.svg',bg:'#00A8E1',emoji:'📦'},
+  'RCTI+':        {logo:null,bg:'#E31E24',emoji:'📡'},
+  'HBO MAX':      {logo:'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/hbo.svg',bg:'#8D04B9',emoji:'🎭'},
+  'VISION SPORT': {logo:null,bg:'#FF6600',emoji:'⚽'},
+  'VIKI RAKUTEN': {logo:null,bg:'#BF0000',emoji:'🎎'},
+  'BSTATION':     {logo:'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/bilibili.svg',bg:'#00A1D6',emoji:'📺'},
+  'CATCHPLAY':    {logo:null,bg:'#FF3C4E',emoji:'🎬'},
+  'CRUNCHYROLL':  {logo:'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/crunchyroll.svg',bg:'#F47521',emoji:'🍙'},
+  'MOVIE BOX':    {logo:null,bg:'#222222',emoji:'🎥'},
+  'DRAKOR ID':    {logo:null,bg:'#C0392B',emoji:'🇰🇷'},
+  'GAGAOLALA':    {logo:null,bg:'#FF69B4',emoji:'🌈'},
+  'SPOTIFY':      {logo:'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/spotify.svg',bg:'#1DB954',emoji:'🎵'},
+  'APPLE MUSIC':  {logo:'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/applemusic.svg',bg:'#FC3C44',emoji:'🎶'},
+  'CANVA':        {logo:'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/canva.svg',bg:'#00C4CC',emoji:'🎨'},
+  'CAPCUT':       {logo:'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/capcut.svg',bg:'#000000',emoji:'✂️'},
+  'MS365':        {logo:'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/microsoftoffice.svg',bg:'#D83B01',emoji:'📄'},
+  'WPS OFFICE':   {logo:null,bg:'#C0261D',emoji:'📝'},
+  'GOODNOTES IOS':{logo:null,bg:'#FFCC00',emoji:'📓'},
+  'QUIZLET PLUS': {logo:'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/quizlet.svg',bg:'#4257B2',emoji:'📚'},
+  'ZOOM PRO':     {logo:'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/zoom.svg',bg:'#2D8CFF',emoji:'🎤'},
+  'PROCCD':       {logo:null,bg:'#3D3D3D',emoji:'📷'},
+  'PROCREATE':    {logo:null,bg:'#333333',emoji:'🖌️'},
+  'REMINI WEB':   {logo:null,bg:'#5856D6',emoji:'🖼️'},
+  'TEZZA':        {logo:null,bg:'#B8860B',emoji:'📸'},
+  'MEITU':        {logo:null,bg:'#FF69B4',emoji:'🌸'},
+  'OLDROLL':      {logo:null,bg:'#8B4513',emoji:'📽️'},
+  'PICSART':      {logo:'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/picsart.svg',bg:'#FA3C3C',emoji:'🎨'},
+  'POLAR':        {logo:null,bg:'#1E90FF',emoji:'🔵'},
+  'LIGHTROOM':    {logo:'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/adobelightroom.svg',bg:'#31A8FF',emoji:'📷'},
+  'VSCO':         {logo:'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/vsco.svg',bg:'#000000',emoji:'📸'},
+  'IBIS PAINT':   {logo:null,bg:'#FF4500',emoji:'🖼️'},
+  'ALIGHT MOTION':{logo:null,bg:'#333333',emoji:'🎬'},
+  'EPIK':         {logo:null,bg:'#7B2FBE',emoji:'✨'},
+  'DAZZCAM':      {logo:null,bg:'#2C2C2C',emoji:'📸'},
+  'CHAT GPT':     {logo:'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/openai.svg',bg:'#000000',emoji:'🤖'},
+  'GEMINI+GOOGLE ONE':{logo:'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/google.svg',bg:'#4285F4',emoji:'💎'},
+  'PERPLEXITY AI':{logo:null,bg:'#1DB8A8',emoji:'🔍'},
+  'QUILLBOT':     {logo:null,bg:'#00A652',emoji:'✍️'},
+  'GRAMMARLY':    {logo:'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/grammarly.svg',bg:'#15C39A',emoji:'✅'},
+  'DUOLINGO':     {logo:'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/duolingo.svg',bg:'#58CC02',emoji:'🦉'},
+  'BRAINLY PLUS': {logo:null,bg:'#B40011',emoji:'🧠'},
+  'SCRIBD':       {logo:'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/scribd.svg',bg:'#1E7B34',emoji:'📖'},
+  'I LOVE PDF':   {logo:null,bg:'#E03D3D',emoji:'📄'},
+  'CAMSCANNER':   {logo:null,bg:'#009A55',emoji:'📷'},
+  'MINECRAFT':    {logo:'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/minecraft.svg',bg:'#62B47A',emoji:'⛏️'},
+  "PAPA'S TO GO": {logo:null,bg:'#FF6600',emoji:'🍕'},
+  'UNPACKING':    {logo:null,bg:'#8A4F7D',emoji:'📦'},
+  'PAPERS PLEASE IOS':{logo:null,bg:'#333333',emoji:'📋'},
+  'INSHOT':       {logo:null,bg:'#FF4C92',emoji:'🎬'},
+  'IFAKE':        {logo:null,bg:'#1C1C1E',emoji:'📱'},
+  'WATTPAD PRO':  {logo:'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/wattpad.svg',bg:'#FF5722',emoji:'📖'},
+  'EXPRESS VPN':  {logo:null,bg:'#DA3940',emoji:'🔒'},
+  'HMA VPN':      {logo:null,bg:'#FFCC00',emoji:'🔐'},
+  'SURFSHARK VPN':{logo:null,bg:'#1A8FF1',emoji:'🦈'},
+  'WINDSCRIBE VPN':{logo:null,bg:'#0D6EFD',emoji:'💨'},
+  'ROBUX VIA LOGIN':{logo:null,bg:'#00B2FF',emoji:'💎'},
+};
+
+const CAT_META = {
+  'Streaming':   {icon:'🎬',label:'Streaming',cls:'cat-streaming',color:'#E11D48'},
+  'Music':       {icon:'🎵',label:'Music',cls:'cat-music',color:'#059669'},
+  'Productivity':{icon:'💼',label:'Produktivitas',cls:'cat-productivity',color:'#2563EB'},
+  'Photo/Design':{icon:'🎨',label:'Foto & Desain',cls:'cat-photodesign',color:'#D97706'},
+  'AI Tools':    {icon:'🤖',label:'AI Tools',cls:'cat-ai',color:'#7C3AED'},
+  'Education':   {icon:'📚',label:'Edukasi',cls:'cat-education',color:'#0891B2'},
+  'Game':        {icon:'🎮',label:'Game',cls:'cat-game',color:'#16A34A'},
+  'Tools':       {icon:'🔧',label:'Tools',cls:'cat-tools',color:'#9333EA'},
+  'VPN':         {icon:'🔒',label:'VPN',cls:'cat-vpn',color:'#475569'},
+  'Robux':       {icon:'💎',label:'Robux',cls:'cat-robux',color:'#DC2626'},
+};
+
+// ========== STORAGE HELPERS ==========
+async function loadStorage(key) {
+  try {
+    if (typeof window.storage !== 'undefined') {
+      const r = await window.storage.get(key, true);
+      return r ? r.value : null;
+    }
+  } catch {}
+  try { return localStorage.getItem(key); } catch {}
+  return null;
+}
+async function saveStorage(key, val) {
+  try {
+    if (typeof window.storage !== 'undefined') {
+      await window.storage.set(key, val, true);
+      return;
+    }
+  } catch {}
+  try { localStorage.setItem(key, val); } catch {}
+}
+
+// ========== PRICE HELPERS ==========
+function pKey(name, plan) { return name + '|||' + plan; }
+function getPrice(name, plan, base) {
+  const k = pKey(name, plan);
+  return priceOverrides.hasOwnProperty(k) ? priceOverrides[k] : base;
+}
+function fmt(n) { return 'Rp ' + Number(n).toLocaleString('id-ID'); }
+
+// ========== INIT ==========
+async function init() {
+  try {
+    const sp = await loadStorage('gcs_prices_v2');
+    if (sp) priceOverrides = JSON.parse(sp);
+  } catch {}
+  try {
+    const sd = await loadStorage('gcs_discount_v2');
+    if (sd !== null) discountText = sd;
+  } catch {}
+  try {
+    const sc = await loadStorage('gcs_catalog_v1');
+    if (sc) { const c = JSON.parse(sc);
+      PRODUCTS = c.products || PRODUCTS; appsReg = c.reg || {}; customMeta = c.meta || {}; customCats = c.cats || {};
+      Object.assign(APP_META, customMeta); Object.assign(CAT_META, customCats); }
+  } catch {}
+  syncReg(); rebuildFilters(); updateStats();
+  renderDiscount();
+  renderAll();
+  initParticles();
+}
+
+// ========== DISCOUNT ==========
+function renderDiscount() {
+  const el = document.getElementById('discountBodyEl');
+  if (discountText && discountText.trim()) {
+    el.innerHTML = '<span>' + discountText.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>') + '</span>';
+  } else {
+    el.innerHTML = '<span class="discount-placeholder">Belum ada info diskon. Admin dapat mengisi melalui panel admin (🔐).</span>';
+  }
+  const badge = document.getElementById('discountAdminBadge');
+  badge.classList.toggle('show', isAdmin);
+}
+
+// ========== RENDER PRODUCTS ==========
+function groupByName(items) {
+  const map = {};
+  items.forEach(p => {
+    if (!map[p.name]) map[p.name] = {name:p.name,cat:p.cat,plans:[],notes:new Set()};
+    map[p.name].plans.push({plan:p.plan,price:getPrice(p.name,p.plan,p.base),notes:p.notes});
+    if (p.notes) map[p.name].notes.add(p.notes);
+  });
+  return Object.values(map);
+}
+
+function renderLogo(name) {
+  const m = APP_META[name] || {logo:null,bg:'#555',emoji:'📱'};
+  const dark = ['#000000','#1C1C1E','#2C2C2C','#333333','#3D3D3D'].includes(m.bg);
+  if (m.logo) {
+    return `<div class="card-logo" style="background:${m.bg}22">
+      <div class="logo-bg" style="background:${m.bg}"></div>
+      <img src="${m.logo}" alt="${name}" style="filter:${dark?'invert(1) brightness(1)':'none'}" onerror="this.parentNode.innerHTML='<span style=font-size:38px>${m.emoji}</span>'">
+    </div>`;
+  }
+  return `<div class="card-logo" style="background:${m.bg}22">
+    <div style="width:68px;height:68px;border-radius:14px;background:${m.bg};display:flex;align-items:center;justify-content:center;font-size:34px;position:relative;z-index:1">${m.emoji}</div>
+  </div>`;
+}
+
+function renderAll() {
+  let filtered = PRODUCTS.filter(p => isActive(p.name));
+  if (currentCat !== 'all') filtered = filtered.filter(p => p.cat === currentCat);
+  if (currentSearch) {
+    const q = currentSearch.toLowerCase();
+    filtered = filtered.filter(p => p.name.toLowerCase().includes(q) || p.plan.toLowerCase().includes(q) || p.cat.toLowerCase().includes(q));
+  }
+  if (!filtered.length) {
+    document.getElementById('mainContent').innerHTML = '<div class="no-results"><div class="no-results-icon">🔍</div><p>Produk tidak ditemukan.<br>Coba kata kunci lain.</p></div>';
+    return;
+  }
+  const bycat = {};
+  filtered.forEach(p => { if(!bycat[p.cat]) bycat[p.cat]=[]; bycat[p.cat].push(p); });
+  let html = '';
+  Object.entries(bycat).forEach(([cat,items]) => {
+    const cm = CAT_META[cat] || {icon:'📦',label:cat,cls:'',color:'#888'};
+    const grouped = groupByName(items);
+    html += `<div class="section-header">
+      <div class="section-title">
+        <div class="section-icon" style="background:${cm.color}20;color:${cm.color}">${cm.icon}</div>
+        <div class="section-name">${esc(cm.label)}</div>
+      </div>
+      <span class="section-count">${grouped.length} app</span>
+    </div><div class="section-divider" style="--sec-color:${cm.color}"></div><div class="products-grid ${cm.cls}">`;
+    grouped.forEach(app => {
+      const hot = ['NETFLIX','CANVA','SPOTIFY','CHAT GPT','YOUTUBE','CAPCUT'].includes(app.name);
+      const isNew = ['GEMINI+GOOGLE ONE','PERPLEXITY AI'].includes(app.name);
+      const notesStr = Array.from(app.notes).filter(Boolean).join(' • ');
+      html += `<div class="product-card">
+        ${hot?'<div class="card-badge">🔥 HOT</div>':isNew?'<div class="card-badge" style="background:linear-gradient(135deg,#0891B2,#2563EB)">✨ NEW</div>':''}
+        ${renderLogo(app.name)}
+        <div class="card-body">
+          <div class="card-app-name">${esc(app.name)}</div>
+          <div class="card-plans">`;
+      app.plans.forEach(pl => {
+        html += `<div class="plan-row">
+          <span class="plan-name">${esc(pl.plan)}</span>
+          <span class="plan-price">${fmt(pl.price)}</span>
+        </div>`;
+      });
+      html += '</div>';
+      if (notesStr) html += `<div class="card-notes">ℹ️ ${esc(notesStr)}</div>`;
+      html += '</div></div>';
+    });
+    html += '</div>';
+  });
+  document.getElementById('mainContent').innerHTML = html;
+}
+
+function filterCat(cat, btn) {
+  currentCat = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAll();
+  window.scrollTo({top:320,behavior:'smooth'});
+}
+
+function handleSearch(val) {
+  currentSearch = val;
+  if (val && currentCat !== 'all') {
+    currentCat = 'all';
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('.filter-btn').classList.add('active');
+  }
+  renderAll();
+}
+
+// ========== ADMIN AUTH ==========
+function handleAdminFab() {
+  if (isAdmin) {
+    openDrawer();
+  } else {
+    document.getElementById('loginModal').classList.add('show');
+    setTimeout(() => document.getElementById('passwordInput').focus(), 100);
+  }
+}
+
+function closeLoginModal() {
+  document.getElementById('loginModal').classList.remove('show');
+  document.getElementById('passwordInput').value = '';
+  document.getElementById('loginErr').classList.remove('show');
+}
+
+function doLogin() {
+  const val = document.getElementById('passwordInput').value;
+  if (val === ADMIN_PASSWORD) {
+    isAdmin = true;
+    document.getElementById('adminFab').classList.add('active-admin');
+    document.getElementById('adminFab').textContent = '🛠️';
+    closeLoginModal();
+    renderDiscount();
+    openDrawer();
+  } else {
+    document.getElementById('loginErr').classList.add('show');
+    document.getElementById('passwordInput').value = '';
+    document.getElementById('passwordInput').focus();
+  }
+}
+
+function doLogout() {
+  isAdmin = false;
+  document.getElementById('adminFab').classList.remove('active-admin');
+  document.getElementById('adminFab').textContent = '🔐';
+  renderDiscount();
+  closeDrawer();
+}
+
+// ========== DRAWER ==========
+function openDrawer() {
+  document.getElementById('adminDrawer').classList.add('open');
+  document.getElementById('drawerOverlay').classList.add('show');
+  renderDrawerTab(currentTab);
+}
+
+function closeDrawer() {
+  document.getElementById('adminDrawer').classList.remove('open');
+  document.getElementById('drawerOverlay').classList.remove('show');
+}
+
+function switchTab(n) {
+  currentTab = n;
+  document.getElementById('dTab1').classList.toggle('active', n===1);
+  document.getElementById('dTab2').classList.toggle('active', n===2);
+  document.getElementById('dTab3').classList.toggle('active', n===3);
+  renderDrawerTab(n);
+}
+
+function renderDrawerTab(n) {
+  const body = document.getElementById('drawerBody');
+  if (n === 3) { body.innerHTML = buildCatalogTab(); return; }
+  if (n === 1) {
+    body.innerHTML = `
+      <label class="form-label">Teks Keterangan Diskon</label>
+      <textarea class="form-textarea" id="discountInput" placeholder="Contoh:
+🎉 Spesial Weekend! Diskon 10% untuk semua plan 1 bulan.
+✅ Gunakan kode: GATCHA10
+⏳ Berlaku sampai Minggu, 25 Mei 2024
+📦 Berlaku untuk semua kategori kecuali Robux.">${discountText}</textarea>
+      <p class="form-hint">💡 Teks ini akan terlihat oleh semua pengunjung dashboard. Kosongkan untuk menyembunyikan banner diskon.</p>`;
+  } else {
+    // Build by app
+    const apps = {};
+    PRODUCTS.forEach(p => {
+      if (!apps[p.name]) apps[p.name] = [];
+      apps[p.name].push(p);
+    });
+    let html = `<input class="price-search-input" type="text" placeholder="🔍 Cari nama aplikasi..." oninput="filterPriceAdmin(this.value)" id="priceSearchAdmin">`;
+    html += '<div id="priceListAdmin">';
+    for (const [name, plans] of Object.entries(apps)) {
+      html += `<div class="price-app-group" data-app="${name.toLowerCase()}">
+        <div class="price-app-label">${name}</div>`;
+      plans.forEach(p => {
+        const curPrice = getPrice(p.name, p.plan, p.base);
+        const safeKey = encodeURIComponent(pKey(p.name, p.plan));
+        html += `<div class="price-row">
+          <span class="price-row-name">${p.plan}</span>
+          <input class="price-input" type="number" value="${curPrice}" data-key="${safeKey}" min="0" step="500">
+        </div>`;
+      });
+      html += '</div>';
+    }
+    html += '</div>';
+    body.innerHTML = html;
+  }
+}
+
+function filterPriceAdmin(q) {
+  const groups = document.querySelectorAll('.price-app-group');
+  groups.forEach(g => {
+    g.style.display = q === '' || g.dataset.app.includes(q.toLowerCase()) ? '' : 'none';
+  });
+}
+
+// ========== SAVE ==========
+async function saveCurrentTab() {
+  if (currentTab === 1) {
+    discountText = document.getElementById('discountInput').value;
+    await saveStorage('gcs_discount_v2', discountText);
+    renderDiscount();
+  } else if (currentTab === 3) {
+    await saveCatalog();
+  } else {
+    const inputs = document.querySelectorAll('.price-input');
+    inputs.forEach(inp => {
+      const key = decodeURIComponent(inp.dataset.key);
+      const val = parseInt(inp.value);
+      if (!isNaN(val) && val > 0) priceOverrides[key] = val;
+    });
+    await saveStorage('gcs_prices_v2', JSON.stringify(priceOverrides));
+    renderAll();
+  }
+  showToast();
+}
+
+function showToast(msg) {
+  const t = document.getElementById('saveToast');
+  t.textContent = msg || '✅ Tersimpan & semua user sudah ter-update!';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ========== ITEM, DURASI & HARGA (KELOLA KATALOG) ==========
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clean = s => String(s || '').replace(/[<>"]/g, '').trim();
+const isActive = n => !appsReg[n] || appsReg[n].active !== false;
+const appOf = b => decodeURIComponent(b.dataset.app);
+function syncReg() { PRODUCTS.forEach(p => { if (!appsReg[p.name]) appsReg[p.name] = {cat:p.cat, active:true}; }); }
+async function saveCatalog() {
+  if (!isAdmin) return;
+  await saveStorage('gcs_catalog_v1', JSON.stringify({products:PRODUCTS, reg:appsReg, meta:customMeta, cats:customCats}));
+}
+function updateStats() {
+  const act = PRODUCTS.filter(p => isActive(p.name)), el = document.querySelectorAll('.stat-num');
+  if (el.length >= 3) { el[0].textContent = new Set(act.map(p => p.name)).size; el[1].textContent = act.length; el[2].textContent = new Set(act.map(p => p.cat)).size; }
+}
+function rebuildFilters() {
+  const used = new Set(PRODUCTS.filter(p => isActive(p.name)).map(p => p.cat));
+  if (currentCat !== 'all' && !used.has(currentCat)) currentCat = 'all';
+  let h = `<button class="filter-btn${currentCat==='all'?' active':''}" data-cat="all" onclick="filterCat(this.dataset.cat,this)">🌟 Semua</button>`;
+  Object.entries(CAT_META).forEach(([k, m]) => { if (used.has(k)) h += `<button class="filter-btn${currentCat===k?' active':''}" data-cat="${esc(k)}" onclick="filterCat(this.dataset.cat,this)">${esc(m.icon)} ${esc(m.label)}</button>`; });
+  document.getElementById('filterTabs').innerHTML = h;
+}
+function refreshStore() {
+  syncReg(); rebuildFilters(); updateStats(); renderAll();
+  if (document.getElementById('adminDrawer').classList.contains('open') && currentTab === 3) {
+    const b = document.getElementById('drawerBody'), y = b.scrollTop; renderDrawerTab(3); b.scrollTop = y;
+  }
+}
+function buildCatalogTab() {
+  const names = [...new Set([...PRODUCTS.map(p => p.name), ...Object.keys(appsReg)])];
+  const opts = Object.entries(CAT_META).map(([k, m]) => `<option value="${esc(k)}">${esc(m.icon)} ${esc(m.label)}</option>`).join('');
+  let h = `<div class="cat-box"><div class="price-app-label">➕ Tambah Item Penjualan Baru</div>
+    <input class="price-search-input" id="nApp" placeholder="Nama item/app (cth: NETFLIX 4K)">
+    <select class="price-search-input" id="nCat" onchange="document.getElementById('nCatNew').style.display=this.value==='__new'?'':'none'">${opts}<option value="__new">➕ Kategori baru…</option></select>
+    <input class="price-search-input" id="nCatNew" placeholder="Nama kategori baru" style="display:none">
+    <input class="price-search-input" id="nEmoji" placeholder="Emoji ikon (opsional)" maxlength="8">
+    <input class="price-search-input" id="nPlan" placeholder="Durasi/plan pertama (cth: Sharing - 1 bulan)">
+    <input class="price-search-input" id="nPrice" type="number" min="0" step="500" placeholder="Harga (Rp)">
+    <input class="price-search-input" id="nNote" placeholder="Catatan (opsional)">
+    <button class="btn-primary" onclick="addApp()">+ Tambah Item</button></div>`;
+  names.forEach(n => {
+    const plans = PRODUCTS.filter(p => p.name === n), act = isActive(n), k = encodeURIComponent(n), canDel = !act && !plans.length;
+    h += `<div class="price-app-group"><div class="app-adm-head"><div class="price-app-label" style="margin:0">${esc(n)}<span class="st ${act?'on':'off'}">${act?'Aktif':'Nonaktif'}</span></div>
+      <div><button class="mini" data-app="${k}" onclick="toggleApp(this)">${act?'Nonaktifkan':'Aktifkan'}</button>
+      <button class="mini del" data-app="${k}" onclick="delApp(this)" ${canDel?'':'disabled'} title="${canDel?'Hapus item ini':'Hanya bisa dihapus jika NONAKTIF dan KOSONG (semua plan dihapus)'}">🗑️ Hapus</button></div></div>`;
+    plans.forEach(p => { h += `<div class="price-row"><span class="price-row-name">${esc(p.plan)}</span><span class="plan-price" style="font-size:12px">${fmt(getPrice(p.name,p.plan,p.base))}</span>
+      <button class="mini del" data-app="${k}" data-plan="${encodeURIComponent(p.plan)}" onclick="delPlan(this)" title="Hapus plan">✕</button></div>`; });
+    if (!plans.length) h += `<p class="form-hint">Item kosong. Tambah durasi/harga, atau ${act?'nonaktifkan lalu ':''}hapus item.</p>`;
+    h += `<div class="add-plan"><input placeholder="Durasi (cth: 1 bulan)"><input type="number" min="0" step="500" placeholder="Harga"><button class="mini" data-app="${k}" onclick="addPlan(this)">+ Plan</button></div></div>`;
+  });
+  return h;
+}
+async function addApp() {
+  if (!isAdmin) return;
+  const g = id => document.getElementById(id).value;
+  const name = clean(g('nApp')).toUpperCase(), plan = clean(g('nPlan')), price = parseInt(g('nPrice')), note = clean(g('nNote'));
+  let cat = g('nCat');
+  if (!name || !plan || !(price > 0)) return showToast('⚠️ Nama, durasi & harga wajib diisi');
+  if (appsReg[name] || PRODUCTS.some(p => p.name === name)) return showToast('⚠️ Item sudah ada — tambahkan durasi lewat kartu item tsb');
+  if (cat === '__new') {
+    const label = clean(g('nCatNew')); if (!label) return showToast('⚠️ Isi nama kategori baru');
+    cat = label; if (!CAT_META[cat]) { customCats[cat] = CAT_META[cat] = {icon:'📦', label, cls:'', color:'#A21CAF'}; }
+  }
+  const emoji = Array.from(clean(g('nEmoji')).replace(/[&']/g, '')).slice(0, 2).join('') || '📱';
+  APP_META[name] = customMeta[name] = {logo:null, bg:CAT_META[cat].color, emoji};
+  appsReg[name] = {cat, active:true};
+  PRODUCTS.push({name, cat, plan, notes:note, base:price});
+  await saveCatalog(); refreshStore(); showToast('✅ Item baru tersimpan & tampil otomatis di toko');
+}
+async function addPlan(btn) {
+  if (!isAdmin) return;
+  const n = appOf(btn), i = btn.parentNode.querySelectorAll('input'), plan = clean(i[0].value), price = parseInt(i[1].value);
+  if (!plan || !(price > 0)) return showToast('⚠️ Isi durasi & harga');
+  if (PRODUCTS.some(p => p.name === n && p.plan.toLowerCase() === plan.toLowerCase())) return showToast('⚠️ Durasi/plan tsb sudah ada');
+  PRODUCTS.push({name:n, cat:appsReg[n].cat, plan, notes:'', base:price});
+  await saveCatalog(); refreshStore(); showToast('✅ Durasi & harga ditambahkan');
+}
+async function delPlan(btn) {
+  if (!isAdmin) return;
+  const n = appOf(btn), plan = decodeURIComponent(btn.dataset.plan);
+  if (!confirm(`Hapus plan "${plan}" dari ${n}?`)) return;
+  PRODUCTS = PRODUCTS.filter(p => !(p.name === n && p.plan === plan));
+  delete priceOverrides[pKey(n, plan)];
+  await saveStorage('gcs_prices_v2', JSON.stringify(priceOverrides));
+  await saveCatalog(); refreshStore(); showToast('🗑️ Plan dihapus');
+}
+async function toggleApp(btn) {
+  if (!isAdmin) return;
+  const n = appOf(btn); appsReg[n].active = !isActive(n);
+  await saveCatalog(); refreshStore(); showToast(isActive(n) ? '✅ Item diaktifkan' : '⏸️ Item dinonaktifkan (disembunyikan dari toko)');
+}
+async function delApp(btn) {
+  if (!isAdmin) return;
+  const n = appOf(btn);
+  if (isActive(n) || PRODUCTS.some(p => p.name === n)) return showToast('⚠️ Hanya bisa dihapus jika nonaktif dan kosong');
+  if (!confirm(`Hapus item "${n}" secara permanen?`)) return;
+  delete appsReg[n]; delete customMeta[n];
+  await saveCatalog(); refreshStore(); showToast('🗑️ Item dihapus');
+}
+
+// ========== PARTICLES ==========
+function initParticles() {
+  const canvas = document.getElementById('particleCanvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = document.body.scrollHeight;
+  }
+  function makeParticles() {
+    particles = [];
+    for (let i = 0; i < 70; i++) {
+      const cols=['#FF0080','#FF6B35','#FFD600','#00C853','#00B0FF','#7C4DFF','#FF4081','#00BCD4','#A21CAF'];
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 4 + 1.5,
+        dx: (Math.random() - 0.5) * 0.3,
+        dy: -Math.random() * 0.5 - 0.1,
+        op: Math.random() * 0.18 + 0.06,
+        col: cols[Math.floor(Math.random()*cols.length)],
+      });
+    }
+  }
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      ctx.globalAlpha = p.op;
+      ctx.fillStyle = p.col;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fill();
+      p.x += p.dx; p.y += p.dy;
+      if (p.y < -5) { p.y = canvas.height + 5; p.x = Math.random() * canvas.width; }
+      if (p.x < -5) p.x = canvas.width + 5;
+      if (p.x > canvas.width + 5) p.x = -5;
+    });
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
+  }
+  resize(); makeParticles(); draw();
+  window.addEventListener('resize', () => { resize(); makeParticles(); });
+}
+
+init();
+</script>
+</body>
+</html>
